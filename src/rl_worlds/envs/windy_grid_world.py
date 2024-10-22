@@ -1,9 +1,4 @@
-import gymnasium as gym
-
-from pprint import pprint
 import numpy as np
-import gym
-from gym import spaces
 
 from rl_worlds.envs.grid_world import GridWorldEnv
 
