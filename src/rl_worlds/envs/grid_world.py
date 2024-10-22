@@ -62,7 +62,7 @@ class GridWorldEnv(gym.Env):
         """Reset the environment to the starting state."""
         super().reset(seed=seed)
 
-        self.state = np.array(self.start_state).astype(np.int32)
+        self.state = tuple(np.array(self.start_state).astype(np.int32))
         self.steps_taken = 0
 
         return self.state, {}
@@ -82,12 +82,12 @@ class GridWorldEnv(gym.Env):
             new_state = self._apply_force(state=new_state)
 
         # Update state
-        self.state = new_state.astype(np.int32)
+        self.state = tuple(new_state.astype(np.int32))
 
         # Calculate reward
-        reward = 1.0 if tuple(self.state) in self.terminal_states else 0.0
+        reward = 1.0 if self.state in self.terminal_states else 0.0
 
-        terminated = tuple(self.state) in self.terminal_states
+        terminated = self.state in self.terminal_states
         truncated = self.steps_taken >= self.max_steps
 
         return self.state, reward, terminated, truncated, {}
