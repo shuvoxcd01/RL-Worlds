@@ -5,6 +5,6 @@ register(
     entry_point="rl_worlds.envs:RandomWalkEnv",
 )
 
-register(id="rl_worlds/GridWorld-v0", entry_point="rl_worlds.envs:GridWorld")
+register(id="rl_worlds/GridWorld-v0", entry_point="rl_worlds.envs:GridWorldEnv")
 
-register(id="rl_worlds/WindyGridWorld-v0", entry_point="rl_worlds.envs:WindyGridWorld")
+register(id="rl_worlds/WindyGridWorld-v0", entry_point="rl_worlds.envs:WindyGridWorldEnv")
