@@ -84,8 +84,7 @@ class GridWorldEnv(gym.Env):
         # Update state
         self.state = tuple(new_state.astype(np.int32))
 
-        # Calculate reward
-        reward = 1.0 if self.state in self.terminal_states else 0.0
+        reward = -1.0
 
         terminated = self.state in self.terminal_states
         truncated = self.steps_taken >= self.max_steps
