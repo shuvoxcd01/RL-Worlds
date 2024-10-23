@@ -8,7 +8,7 @@ from rl_worlds.string_observation_spacy import StringObservationSpace
 class RandomWalkEnv(gym.Env):
     metadata = {"render_modes": ["ansi"], "render_fps": 4}
 
-    def __init__(self, num_states=5, start_state=2):
+    def __init__(self, num_states=5, start_state=2, **kwargs):
         """
         The Random Walk Environment is a custom Gymnasium environment that simulates a simple random walk process.
         The agent starts in a predefined state and moves randomly to adjacent states (left or right) at each timestep.
