@@ -6,9 +6,8 @@ import gymnasium as gym
 
 
 env = gym.make("rl_worlds/RandomWalk-v0")
-env = gym.make("rl_worlds/GridWorld-v0")
-env = gym.make("rl_worlds/WindyGridWorld-v0")
+# env = gym.make("rl_worlds/GridWorld-v0")
+# env = gym.make("rl_worlds/WindyGridWorld-v0")
 
 check_env(env.unwrapped)
-# check_env(GridWorldEnv())
-# check_env(WindyGridWorldEnv())
+
