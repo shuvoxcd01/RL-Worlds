@@ -1,7 +1,8 @@
+from typing import List
 import gymnasium as gym
 from pprint import pprint
 import numpy as np
-from gymnasium.spaces import Discrete, Box
+from gymnasium.spaces import Discrete, Box, Tuple
 
 
 class GridWorldEnv(gym.Env):
@@ -9,9 +10,9 @@ class GridWorldEnv(gym.Env):
 
     def __init__(
         self,
-        grid_size=(7, 10),
-        start_state=(3, 0),
-        goal_states=[(3, 7)],
+        grid_size: tuple = (7, 10),
+        start_state: tuple = (3, 0),
+        goal_states: List[tuple] = [(3, 7)],
         max_steps: int = 50,
         **kwargs,
     ):
@@ -27,8 +28,11 @@ class GridWorldEnv(gym.Env):
         self.action_space = Discrete(4)
 
         # Define the observation space (position on the grid)
-        self.observation_space = Box(
-            low=0, high=max(grid_size), shape=(2,), dtype=np.int32
+        self.observation_space = Tuple(
+            (
+                Box(low=0, high=grid_size[0] - 1, shape=(), dtype=np.int32),
+                Box(low=0, high=grid_size[1] - 1, shape=(), dtype=np.int32),
+            )
         )
 
         # Initialize state
@@ -62,7 +66,7 @@ class GridWorldEnv(gym.Env):
         """Reset the environment to the starting state."""
         super().reset(seed=seed)
 
-        self.state = tuple(np.array(self.start_state).astype(np.int32))
+        self.state = self.start_state
         self.steps_taken = 0
 
         return self.state, {}
@@ -73,7 +77,8 @@ class GridWorldEnv(gym.Env):
 
         # Get the change in position based on the action
         delta = self.action_map[action]
-        new_state = self.state + delta
+        state = np.array(self.state, dtype=np.int32)
+        new_state = state + delta
 
         # Ensure new state is within bounds
         new_state = self._clip_bounds(state=new_state)
@@ -84,7 +89,7 @@ class GridWorldEnv(gym.Env):
         # Update state
         self.state = tuple(new_state.astype(np.int32))
 
-        reward = -1.0
+        reward = -1.0 if self.state not in self.terminal_states else 0.0
 
         terminated = self.state in self.terminal_states
         truncated = self.steps_taken >= self.max_steps
@@ -117,23 +122,24 @@ class GridWorldEnv(gym.Env):
         pprint(grid)
 
 
-force_grid = np.zeros(shape=(7, 10), dtype="float")
-force_grid[:, [3, 4, 5, 8]] = 1.0
-force_grid[:, [6, 7]] = 2.0
-force_direction = "up"
+# if __name__ == "__main__":
+#     # force_grid = np.zeros(shape=(7, 10), dtype="float")
+#     # force_grid[:, [3, 4, 5, 8]] = 1.0
+#     # force_grid[:, [6, 7]] = 2.0
+#     # force_direction = "up"
 
-pprint(force_grid)
-# Example usage:
-env = GridWorldEnv(force_grid=force_grid, force_direction=force_direction)
-obs, _ = env.reset()
-env.render()
+#     # pprint(force_grid)
+#     # # Example usage:
+#     # env = GridWorldEnv(force_grid=force_grid, force_direction=force_direction)
+#     # obs, _ = env.reset()
+#     # env.render()
 
-done = False
-while not done:
-    action = env.action_space.sample()  # Random action
-    obs, reward, terminated, truncated, info = env.step(action)
-    done = terminated or truncated
-    print(
-        f"Action: {env.action_itos[action]}, State: {obs}, Reward: {reward}, Done: {done}"
-    )
-    env.render()
+#     # done = False
+#     # while not done:
+#     #     action = env.action_space.sample()  # Random action
+#     #     obs, reward, terminated, truncated, info = env.step(action)
+#     #     done = terminated or truncated
+#     #     print(
+#     #         f"Action: {env.action_itos[action]}, State: {obs}, Reward: {reward}, Done: {done}"
+#     #     )
+#     #     env.render()
