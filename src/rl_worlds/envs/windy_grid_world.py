@@ -30,17 +30,17 @@ class WindyGridWorldEnv(GridWorldEnv):
             force_direction=force_direction,
         )
 
-
-env = WindyGridWorldEnv()
-obs, _ = env.reset()
-env.render()
-
-done = False
-while not done:
-    action = env.action_space.sample()  # Random action
-    obs, reward, terminated, truncated, info = env.step(action)
-    done = terminated or truncated
-    print(
-        f"Action: {env.action_itos[action]}, State: {obs}, Reward: {reward}, Done: {done}"
-    )
+if __name__ == "__main__":
+    env = WindyGridWorldEnv()
+    obs, _ = env.reset()
     env.render()
+
+    done = False
+    while not done:
+        action = env.action_space.sample()  # Random action
+        obs, reward, terminated, truncated, info = env.step(action)
+        done = terminated or truncated
+        print(
+            f"Action: {env.action_itos[action]}, State: {obs}, Reward: {reward}, Done: {done}"
+        )
+        env.render()

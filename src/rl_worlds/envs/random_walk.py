@@ -2,13 +2,19 @@ import gymnasium as gym
 from gymnasium.spaces import Discrete
 import random
 
-from rl_worlds.string_observation_spacy import StringObservationSpace
+from rl_worlds.string_observation_space import StringObservationSpace
 
 
 class RandomWalkEnv(gym.Env):
     metadata = {"render_modes": ["ansi"], "render_fps": 4}
 
-    def __init__(self, num_states=5, start_state=2, **kwargs):
+    def __init__(
+        self,
+        num_states=5,
+        start_state=2,
+        use_numeric_state_representation: bool = False,
+        **kwargs,
+    ):
         """
         The Random Walk Environment is a custom Gymnasium environment that simulates a simple random walk process.
         The agent starts in a predefined state and moves randomly to adjacent states (left or right) at each timestep.
@@ -26,9 +32,11 @@ class RandomWalkEnv(gym.Env):
         # Set the current state to the start state
         self.state_idx = self.start_state
         self.terminal_state = "*"
-        self.non_terminal_states = [
-            chr(65 + i) for i in range(self.num_non_terminal_states)
-        ]  # A, B, C, D, E
+        self.non_terminal_states = (
+            [chr(65 + i) for i in range(self.num_non_terminal_states)]
+            if not use_numeric_state_representation
+            else [i for i in range(self.num_non_terminal_states)]
+        )
 
         self.idx_to_state = dict()
         self.idx_to_state[-1] = self.terminal_state
@@ -55,13 +63,9 @@ class RandomWalkEnv(gym.Env):
         if self.state_idx < 0:
             done = True
             reward = 0  # Left terminal state, no reward
-            # self.state = 0  # Resetting to minimum valid state for observation
         elif self.state_idx >= self.num_non_terminal_states:
             done = True
             reward = 1  # Right terminal state, reward of +1
-            # self.state = (
-            #     self.num_states - 1
-            # )  # Resetting to max valid state for observation
         else:
             done = False
             reward = 0  # All other states, no reward
@@ -81,14 +85,15 @@ class RandomWalkEnv(gym.Env):
 
     def render(self):
         # Simple rendering: Print the state as a letter corresponding to its position
-        state_str = "".join(self.idx_to_state.values())
+        char_states = [str(s) for s in self.idx_to_state.values()]
+        state_str = "".join(char_states)
         current_pos = self.state_idx + 1
 
         # Adding bold formatting and brackets around the current state
         display_str = (
             state_str[:current_pos]
             + "\033[1m["
-            + self.idx_to_state[self.state_idx]
+            + str(self.idx_to_state[self.state_idx])
             + "]\033[0m"
             + state_str[current_pos + 1 :]
         )
