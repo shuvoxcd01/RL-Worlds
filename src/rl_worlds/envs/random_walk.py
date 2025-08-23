@@ -51,7 +51,7 @@ class RandomWalkEnv(gym.Env):
         # Observation space: state is represented as a single integer (state index)
         self.observation_space = StringObservationSpace(
             non_terminal_states=self.non_terminal_states,
-            terminal_state=self.terminal_state,
+            terminal_states=[self.terminal_state],
         )
 
     def step(self, action):
