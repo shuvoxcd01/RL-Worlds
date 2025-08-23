@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "RL-Worlds"
+version: "0.0.3"
+date-released: "2025-08-23"
+url: "https://github.com/shuvoxcd01/RL-Worlds"
+repository-code: "https://github.com/shuvoxcd01/RL-Worlds.git"
+authors:
+  - name: "Falguni Das Shuvo"
+    # orcid: "https://orcid.org/0000-0000-0000-0000"
+abstract: "RL-Worlds is a collection of reinforcement learning (RL) environments designed to help researchers, students, and enthusiasts study and implement RL algorithms. All environments are built to adhere to the Gymnasium environment format, making them compatible with a wide range of RL libraries and tools."
+keywords:
+  - "Reinforcement Learning"
+  - "RL Environment"
+  - "Grid World"
+  - "Windy Grid World"
+  - "Random Walk"
+  - "Short Corridor"
+  - "Gymnasium"
+  - "Tunnel World"
+  - "Python"
+license: MIT

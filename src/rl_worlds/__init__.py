@@ -36,3 +36,11 @@ register(
         "max_steps": 50,
     },
 )
+
+register(
+    id="rl_worlds/TunnelWorld-v0",
+    entry_point="rl_worlds.envs:TunnelWorld",
+    kwargs={
+        "max_steps": 10,
+    },
+)
