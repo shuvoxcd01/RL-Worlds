@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rl_worlds"
-version = "0.0.1"
-dependencies = ["gymnasium==0.29.1", "numpy==1.24.4",]
+version = "0.0.3"
+dependencies = ["gymnasium==1.0.0", "numpy==1.24.4",]
 requires-python = ">= 3.8"
 authors=[{name="Falguni Das Shuvo"}]
 readme = "README.md"
 license = {file = "LICENSE"}
-keywords = ["Reinforcement Learning", "RL Environment", "Grid World", "Windy Grid World", "Random Walk"]
+keywords = ["Reinforcement Learning", "RL Environment", "Grid World", "Windy Grid World", "Random Walk", "Tunnel World"]
 
 [project.urls]
 Repository = "https://github.com/shuvoxcd01/RL-Worlds.git"
