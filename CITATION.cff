@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 type: software
 title: "RL-Worlds"
-version: "0.0.3"
+version: "0.0.3.post1"
 date-released: "2025-08-23"
 url: "https://github.com/shuvoxcd01/RL-Worlds"
 repository-code: "https://github.com/shuvoxcd01/RL-Worlds.git"
