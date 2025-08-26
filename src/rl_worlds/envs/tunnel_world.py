@@ -1,3 +1,4 @@
+from typing import Union
 import gymnasium as gym
 from gymnasium.spaces import Discrete
 
@@ -12,6 +13,7 @@ class TunnelWorld(gym.Env):
 
     def __init__(
         self,
+        numeric_observation=True,
         max_steps: int = 50,
         **kwargs,
     ):
@@ -20,8 +22,10 @@ class TunnelWorld(gym.Env):
         self.start_state = "B"
         self.terminal_states = ["A", "D"]
 
+        self.numeric_observation = numeric_observation
+
         self.action_space = Discrete(2)  # 0: left, 1: right
-        self.observation_space = StringObservationSpace(non_terminal_states=["B", "C"], terminal_states=["A", "D"])
+        self.observation_space = StringObservationSpace(non_terminal_states=["B", "C"], terminal_states=["A", "D"]) if not numeric_observation else Discrete(len(self.states))
 
         self.reward_map = {
             ("A", 0): 0,
@@ -39,22 +43,11 @@ class TunnelWorld(gym.Env):
         self.is_terminated = False
         self.is_truncated = False
 
+    def _format_observation(self, observation:str)->Union[int, str]:
+        formatted_observation = observation if not self.numeric_observation else self.states.index(observation)
 
-    def _get_transition_probability(self, state, action):
-        """Get the transition probability for a given state and action."""
-        if state not in self.states:
-            return 0.0
+        return formatted_observation
 
-        if action == 0:  # Move left
-            next_state = self.states[self.states.index(state) - 1]
-        elif action == 1:  # Move right
-            next_state = self.states[self.states.index(state) + 1]
-        else:
-            return 0.0
-
-        if next_state in self.terminal_states:
-            return 1.0
-        return 0.0
 
     def reset(self, seed=None, options=None): # type: ignore
         """Reset the environment to the starting state."""
@@ -63,19 +56,20 @@ class TunnelWorld(gym.Env):
         self.steps = 0
         self.is_terminated = False
         self.is_truncated = False
-        return self.current_state, {}
 
- 
+
+        return self._format_observation(self.current_state), {}
+
 
     def step(self, action):
         """Execute an action and return next state, reward, terminated, truncated, and info."""
 
         if self.is_terminated or self.is_truncated:
-            return self.current_state, 0, self.is_terminated, self.is_truncated, {}
+            return self._format_observation(self.current_state), 0, self.is_terminated, self.is_truncated, {}
 
         if self.steps >= self.max_steps:
             self.is_truncated = True
-            return self.current_state, 0, self.is_terminated, self.is_truncated, {}
+            return self._format_observation(self.current_state), 0, self.is_terminated, self.is_truncated, {}
 
         self.steps += 1
 
@@ -91,7 +85,7 @@ class TunnelWorld(gym.Env):
 
         self.current_state = next_state
 
-        return self.current_state, reward, self.is_terminated, self.is_truncated, {}
+        return self._format_observation(self.current_state), reward, self.is_terminated, self.is_truncated, {}
 
     def render(self):
         """Render the current state of the environment."""
