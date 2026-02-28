@@ -3,10 +3,13 @@ from rl_worlds.envs.grid_world import GridWorldEnv
 from rl_worlds.envs.random_walk import RandomWalkEnv
 from rl_worlds.envs.windy_grid_world import WindyGridWorldEnv
 from rl_worlds.envs.tunnel_world import TunnelWorld
+from rl_worlds.envs.deceptive_world import DeceptiveWorldEnv
 import gymnasium as gym
 
-
-env = gym.make("rl_worlds/RandomWalk-v0", num_states=6)
+# env = gym.make("rl_worlds/DeceptiveWorld-small-v0")
+env = gym.make("rl_worlds/DeceptiveWorld-medium-v0")
+#env = gym.make("rl_worlds/DeceptiveWorld-large-v0")
+# env = gym.make("rl_worlds/RandomWalk-v0", num_states=6)
 # env = gym.make("rl_worlds/ThousandStatesRandomWalk-v0")
 # env = gym.make("rl_worlds/GridWorld-v0")
 # env = gym.make("rl_worlds/WindyGridWorld-v0")
