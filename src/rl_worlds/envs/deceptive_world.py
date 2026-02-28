@@ -99,7 +99,7 @@ class DeceptiveWorldEnv(gym.Env):
         elif next_state == self.pseudo_target:
             reward = 50.0
             self._terminated = True
-        elif actually_moved and next_state in self._visited_states:
+        elif next_state in self._visited_states:
             reward = -1.0
         elif (
             next_state in self.leftmost_column
