@@ -17,7 +17,8 @@ class DeceptiveWorldEnv(gym.Env):
     12 13 14 15    <- pseudo target: 12 (bottom-left), real target: 15 (bottom-right)
 
     Reward structure:
-    - Step into leftmost column state (not start, not pseudo target), agent moved: +10.0
+    - First visit to a leftmost-column state (not start, not pseudo target), agent moved: +10.0
+    - Revisit any previously visited state (agent actually moved): -1.0
     - Reach pseudo target (bottom-left): +50.0 (terminal)
     - Reach real target (bottom-right): +100.0 (terminal)
     - All other steps: 0.0
@@ -53,6 +54,7 @@ class DeceptiveWorldEnv(gym.Env):
         self._trajectory = []
         self._terminated = False
         self._truncated = False
+        self._visited_states: set = {self.start_state}
 
     def reset(self, *, seed=None, options=None):
         super().reset(seed=seed)
@@ -61,6 +63,7 @@ class DeceptiveWorldEnv(gym.Env):
         self._trajectory = []
         self._terminated = False
         self._truncated = False
+        self._visited_states = {self.start_state}
         return self._state, {"trajectory": list(self._trajectory)}
 
     def step(self, action):
@@ -96,6 +99,8 @@ class DeceptiveWorldEnv(gym.Env):
         elif next_state == self.pseudo_target:
             reward = 50.0
             self._terminated = True
+        elif actually_moved and next_state in self._visited_states:
+            reward = -1.0
         elif (
             next_state in self.leftmost_column
             and next_state != self.start_state
@@ -104,6 +109,8 @@ class DeceptiveWorldEnv(gym.Env):
             reward = 10.0
         else:
             reward = 0.0
+
+        self._visited_states.add(next_state)
 
         if not self._terminated and self._steps >= self.max_steps:
             self._truncated = True
