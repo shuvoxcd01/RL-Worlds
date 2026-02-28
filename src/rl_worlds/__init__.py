@@ -44,3 +44,21 @@ register(
         "max_steps": 10,
     },
 )
+
+register(
+    id="rl_worlds/DeceptiveWorld-small-v0",
+    entry_point="rl_worlds.envs:DeceptiveWorldEnv",
+    kwargs={"size": "small"},
+)
+
+register(
+    id="rl_worlds/DeceptiveWorld-medium-v0",
+    entry_point="rl_worlds.envs:DeceptiveWorldEnv",
+    kwargs={"size": "medium"},
+)
+
+register(
+    id="rl_worlds/DeceptiveWorld-large-v0",
+    entry_point="rl_worlds.envs:DeceptiveWorldEnv",
+    kwargs={"size": "large"},
+)

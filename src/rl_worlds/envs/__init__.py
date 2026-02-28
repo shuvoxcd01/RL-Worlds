@@ -3,3 +3,4 @@ from rl_worlds.envs.thousand_states_random_walk import ThousandStatesRandomWalkE
 from rl_worlds.envs.grid_world import GridWorldEnv
 from rl_worlds.envs.windy_grid_world import WindyGridWorldEnv
 from rl_worlds.envs.tunnel_world import TunnelWorld
+from rl_worlds.envs.deceptive_world import DeceptiveWorldEnv
